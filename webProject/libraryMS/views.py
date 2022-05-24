@@ -126,4 +126,53 @@ def availableBooksView(request):
 
     return render(request, 'pages/adminProfile.html', context)
 
+@login_required
+def userProfileView(request):
+    user = request.user
+    student = Student.objects.get(user=user)
+    context={
+        'books': student.books.all()
+    }
+    return render(request, 'pages/userProfile.html', context)
+
+
+@login_required
+def userBorrow(request, id):
+    user = request.user
+    period = ''
+    if not user.is_student:
+        return redirect('index')
+    else:
+        myBooks = []
+        if Student.objects.get(user=user):
+            student = Student.objects.get(user=user) 
+
+            newBook = Book.objects.get(isbn = id)
+            if newBook and student:
+                student.books.add(newBook)
+                period = BorrowingPeriod.objects.create(student= student, book= newBook)
+                period.save()
+        
+            myBooks = student.books
+    context = {
+        'books': myBooks.all(),
+        'period': period 
+    }
+
+
+    return render(request, 'pages/userProfile.html', context)
+
+
+@login_required
+def deleteView(request, id):
+    user = request.user
+    if Student.objects.get(user=user):
+        student = Student.objects.get(user=user)
+        book = student.books.get(isbn = id)
+        #book.delete()
+        student.books.remove(book)
+        return redirect('userProfile')
+        
+    return render(request, 'pages/index.html')
+
 
