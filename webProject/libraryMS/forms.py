@@ -127,6 +127,32 @@ class StudentSignUpForm(UserCreationForm):
             self._errors['password2'] = self.error_class(["password doesn't match"])
 
         return self.cleaned_data
+    
+    class LoginForm(forms.Form):
+
+    email = forms.EmailField(widget= forms.TextInput(attrs={'id': 'login-view', 'placeholder': 'Email'}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'login-view1', 'type':'password', 'placeholder': 'Password'}))
+
+    class Meta:
+        model = User
+        fields = ['email', 'password1']
+    
+
+
+
+
+class NewBookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['Title', 'Author', 'Price', 'image', 'status', 'isbn']
+        widgets={
+            'isbn': forms.TextInput(attrs={'type':'text'}),
+            'Title': forms.TextInput(attrs={'type':'text', 'placeholder': 'Enter Book Title'}),
+            'Author': forms.TextInput(attrs={'type':'text', 'placeholder': 'Enter Author Name'}),
+            'Price': forms.TextInput(attrs={'type':'text', 'placeholder': 'Enter Book Price'}),
+            'image': forms.FileInput(),
+            'status': forms.Select(attrs={'type':'text'}),
+        }
 
 
 
