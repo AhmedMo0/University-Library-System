@@ -1,0 +1,1 @@
+web: cd ./webProject && gunicorn webProject.wsgi:application --log-file - --log-level debug
