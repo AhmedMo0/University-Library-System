@@ -17,4 +17,4 @@ Home page any visitor can see its content but to borrow a book you should login 
 - Performing operations on books: borrowing, returning, extending borrowing period. 
 - Log out.
 
-This version deployed on heroku try it <a href="https://infinite-springs-37521.herokuapp.com">here</a>
+This version deployed on heroku try it <a href="https://infinite-springs-37521.herokuapp.com">from here.</a>
