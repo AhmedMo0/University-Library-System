@@ -46,6 +46,42 @@ class Student(models.Model):
         email = self.user.email
         return email
     
+    class Book(models.Model):
+    book_status=[
+        ('available', 'available'),
+        ('unavailable', 'unavailable')
+    ]
+    isbn = models.CharField('ISBN', max_length=13, unique=True, primary_key=True, default='')
+    Title = models.CharField(verbose_name='Title' ,max_length=60)
+    Author = models.CharField(max_length=30, null=True, blank=True)
+    Price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, default=0.00)
+    image = models.ImageField(upload_to='images/books', null=True, blank=True)
+    status = models.CharField(max_length=30, choices=book_status, default='available')
+    active = models.BooleanField(default=True , null=True, blank=True)
+    #Duration =
+
+
+    def __str__(self):
+        return self.Title
+
+
+    class Meta:
+        managed =True
+        constraints = [
+            models.CheckConstraint(check=models.Q(Price__gte='0.01'), name='product_price_non_negative'),
+        ]
+
+
+class BorrowingPeriod(models.Model):
+    afterDays = datetime.now() + timedelta(days=7)
+
+    student = models.ForeignKey(to='Student', on_delete=models.PROTECT, null=True, blank=True)
+    book = models.ForeignKey(to='Book', on_delete=models.PROTECT, null=True, blank=True)
+    period = models.DateField(default=afterDays)
+
+    def __str__(self):
+        return self.student.user.email
+    
 
 
 
